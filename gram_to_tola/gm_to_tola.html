@@ -160,6 +160,7 @@
     function backspace() {
       input = input.slice(0, -1);
       document.getElementById("gramInput").value = input;
+      calculate();
     }
 
     function clearInput() {
