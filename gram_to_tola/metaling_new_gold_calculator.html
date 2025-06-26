@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gold Metaling Calculator</title>
+  <style>
+    /* -------------  CSS Variables  ------------- */
+    :root {
+      /* Light theme */
+      --primary-color: #ffc107;
+      --secondary-color: #28a745;
+      --bg-color: #f9f9f9;
+      --card-bg: #ffffff;
+      --result-bg: #f4f4f4;
+      --text-color: #333333;
+      --border-color: #dddddd;
+      --shadow-color: rgba(0, 0, 0, 0.1);
+      --hover-primary: #e0a800;
+      --hover-secondary: #218838;
+    }
+
+    /* Dark theme overrides */
+    .dark-mode {
+      --primary-color: #ffbf00;
+      --secondary-color: #31b657;
+      --bg-color: #121212;
+      --card-bg: #1e1e1e;
+      --result-bg: #242424;
+      --text-color: #e0e0e0;
+      --border-color: #333333;
+      --shadow-color: rgba(0, 0, 0, 0.6);
+      --hover-primary: #cc9900;
+      --hover-secondary: #299349;
+    }
+
+    /* -----------  Global Styles  ----------- */
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0; padding: 20px;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    /* -------------  Toggle Switch  ------------- */
+    .theme-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      user-select: none;
+      z-index: 100;
+    }
+    .theme-toggle input { display: none; }
+    .toggle-label {
+      width: 50px;
+      height: 24px;
+      background: var(--border-color);
+      border-radius: 9999px;
+      position: relative;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .toggle-label::after {
+      content: "";
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      background: var(--card-bg);
+      transition: transform 0.3s, background 0.3s;
+      box-shadow: 0 1px 4px var(--shadow-color);
+    }
+    input:checked + .toggle-label {
+      background: var(--secondary-color);
+    }
+    input:checked + .toggle-label::after {
+      transform: translateX(26px);
+      background: var(--card-bg);
+    }
+
+    /* -------------  Card  ------------- */
+    .container {
+      max-width: 600px; margin: 80px auto 0;
+      background: var(--card-bg);
+      padding: 25px;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px var(--shadow-color);
+      transition: background 0.3s, box-shadow 0.3s;
+    }
+
+    h2 { text-align: center; margin-bottom: 25px; color: var(--primary-color); }
+
+    /* Inputs */
+    .input-group { margin-bottom: 18px; }
+    .input-group label { display: block; margin-bottom: 6px; font-weight: 600; }
+    .input-group input {
+      width: 100%; padding: 10px; font-size: 16px; outline: none;
+      border: 1px solid var(--border-color); border-radius: 8px;
+      background: var(--bg-color); color: var(--text-color);
+      transition: background 0.3s, border 0.3s;
+    }
+    .input-group input:focus { border-color: var(--primary-color); }
+
+    .row { display: flex; flex-wrap: wrap; gap: 16px; }
+    .col { flex: 1; min-width: 120px; }
+
+    /* Results */
+    .results { display: flex; gap: 12px; margin-top: 28px; flex-wrap: wrap; }
+    .result-box {
+      flex: 1; min-width: 120px;
+      background: var(--result-bg);
+      padding: 15px; text-align: center;
+      border-radius: 10px;
+      border: 1px solid var(--border-color);
+      font-size: 16px; font-weight: 600;
+      transition: background 0.3s;
+    }
+
+    /* Buttons */
+    .btn-row { display: flex; gap: 15px; margin-top: 32px; flex-wrap: wrap; }
+    button {
+      flex: 1; min-width: 120px; padding: 12px; font-size: 16px;
+      font-weight: bold; border: none; border-radius: 8px;
+      cursor: pointer; transition: background 0.3s;
+    }
+    .calculate { background: var(--secondary-color); color: #fff; }
+    .calculate:hover { background: var(--hover-secondary); }
+    .clear { background: var(--primary-color); color: #fff; }
+    .clear:hover { background: var(--hover-primary); }
+
+    @media(max-width: 500px) {
+      .row, .results, .btn-row { flex-direction: column; }
+      .container { margin-top: 100px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Theme toggle switch -->
+  <div class="theme-toggle">
+    <input type="checkbox" id="toggleTheme">
+    <label class="toggle-label" for="toggleTheme"></label>
+  </div>
+
+  <div class="container">
+    <h2>Gold Metaling Calculator</h2>
+    <div class="input-group">
+      <label for="goldWeight">Gold Weight (gm)</label>
+      <input type="number" id="goldWeight" step="0.001" placeholder="Enter gold weight in grams" />
+    </div>
+
+    <div class="row">
+      <div class="col input-group">
+        <label for="goldTouch">Gold Touch (%)</label>
+        <input type="number" id="goldTouch" step="0.01" placeholder="Enter current gold touch %" />
+      </div>
+      <div class="col input-group">
+        <label for="requiredTouch">Required Touch (%)</label>
+        <input type="number" id="requiredTouch" step="0.01" placeholder="Enter required gold touch %" />
+      </div>
+    </div>
+
+    <div class="results">
+      <div class="result-box" id="pureGold">Pure Gold: </div>
+      <div class="result-box" id="alloy">Alloy: </div>
+      <div class="result-box" id="netWeight">Net Weight: </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="calculate" onclick="calculate()">CALCULATE</button>
+      <button class="clear" onclick="clearFields()">CLEAR</button>
+    </div>
+  </div>
+
+  <script>
+    /* -------------  Calculator Logic  ------------- */
+    function calculate() {
+      const weight = parseFloat(document.getElementById('goldWeight').value);
+      let touch = parseFloat(document.getElementById('goldTouch').value);
+      let requiredTouch = parseFloat(document.getElementById('requiredTouch').value);
+
+      if (!weight || !touch || !requiredTouch) return;
+
+      touch = touch / 100;
+      requiredTouch = requiredTouch / 100;
+
+      const netWeight = parseFloat((weight * touch / requiredTouch).toFixed(3));
+      const alloy = parseFloat((netWeight - weight).toFixed(3));
+      const pure = parseFloat((weight * touch).toFixed(3));
+
+      document.getElementById('pureGold').innerText = `Pure Gold: ${pure} gm`;
+      document.getElementById('alloy').innerText = `Alloy: ${alloy} gm`;
+      document.getElementById('netWeight').innerText = `Net Weight: ${netWeight} gm`;
+    }
+
+    function clearFields() {
+      document.getElementById('goldWeight').value = '';
+      document.getElementById('goldTouch').value = '';
+      document.getElementById('requiredTouch').value = '';
+      document.getElementById('pureGold').innerText = 'Pure Gold: ';
+      document.getElementById('alloy').innerText = 'Alloy: ';
+      document.getElementById('netWeight').innerText = 'Net Weight: ';
+    }
+
+    /* -------------  Dark Mode Logic  ------------- */
+    const toggle = document.getElementById('toggleTheme');
+    const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+    // Init theme based on preference or stored value
+    const storedTheme = localStorage.getItem('theme');
+    if (storedTheme === 'dark' || (!storedTheme && prefersDarkScheme)) {
+      document.body.classList.add('dark-mode');
+      toggle.checked = true;
+    }
+
+    toggle.addEventListener('change', () => {
+      document.body.classList.toggle('dark-mode');
+      if (document.body.classList.contains('dark-mode')) {
+        localStorage.setItem('theme', 'dark');
+      } else {
+        localStorage.setItem('theme', 'light');
+      }
+    });
+  </script>
+</body>
+</html>
