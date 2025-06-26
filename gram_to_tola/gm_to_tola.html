@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Gram to Tola Converter</title>
+  <style>
+    body {
+      background-color: #121212;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      color: #ffc107;
+    }
+    .output {
+      font-size: 24px;
+      margin-top: 20px;
+    }
+    .result {
+      margin-top: 15px;
+      font-size: 18px;
+      color: #00e676;
+    }
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(3, 80px);
+      gap: 10px;
+      justify-content: center;
+      margin: 25px auto;
+    }
+    button {
+      padding: 15px;
+      font-size: 20px;
+      background-color: #333;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #444;
+    }
+    input {
+      font-size: 26px;
+      text-align: center;
+      padding: 12px;
+      border-radius: 5px;
+      width: 180px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Gram to Tola Converter</h1>
+
+  <div class="output">
+    <input type="text" id="gramInput" readonly placeholder="0.00 g" />
+  </div>
+
+  <div id="resultBox" class="result"></div>
+
+  <div class="buttons">
+    <button onclick="addValue('7')">7</button>
+    <button onclick="addValue('8')">8</button>
+    <button onclick="addValue('9')">9</button>
+    <button onclick="addValue('4')">4</button>
+    <button onclick="addValue('5')">5</button>
+    <button onclick="addValue('6')">6</button>
+    <button onclick="addValue('1')">1</button>
+    <button onclick="addValue('2')">2</button>
+    <button onclick="addValue('3')">3</button>
+    <button onclick="addValue('.')">.</button>
+    <button onclick="addValue('0')">0</button>
+    <button onclick="backspace()">⌫</button>
+    <button onclick="clearInput()">AC</button>
+  </div>
+
+  <script>
+    let input = "";
+
+    function addValue(val) {
+      if (val === "." && input.includes(".")) return;
+      input += val;
+      document.getElementById("gramInput").value = input;
+      calculate();
+    }
+
+    function backspace() {
+      input = input.slice(0, -1);
+      document.getElementById("gramInput").value = input;
+      calculate();
+    }
+
+    function clearInput() {
+      input = "";
+      document.getElementById("gramInput").value = "";
+      document.getElementById("resultBox").innerHTML = "";
+    }
+
+    function calculate() {
+      const gram = parseFloat(input);
+      if (isNaN(gram) || gram <= 0) {
+        document.getElementById("resultBox").innerHTML = "";
+        return;
+      }
+
+      const tolaGram = 11.664;
+      const aana = 0.729;
+      const rati = 0.182;
+
+      let resultTola = 0;
+      let resultAana = 0;
+      let resultRatti = 0;
+
+      if (gram >= tolaGram) {
+        resultTola = Math.floor(gram / tolaGram);
+        const remTola = gram - resultTola * tolaGram;
+
+        if (remTola >= aana) {
+          resultAana = Math.floor(remTola / aana);
+          const remAana = remTola - resultAana * aana;
+          resultRatti = (remAana / rati).toFixed(2);
+        } else {
+          resultAana = 0;
+          resultRatti = (remTola / rati).toFixed(2);
+        }
+      } else if (gram >= aana) {
+        resultAana = Math.floor(gram / aana);
+        const remAana = gram - resultAana * aana;
+        resultRatti = (remAana / rati).toFixed(2);
+      } else {
+        resultRatti = (gram / rati).toFixed(2);
+      }
+
+      document.getElementById("resultBox").innerHTML =
+        `Tola: <b>${resultTola}</b><br>Aana: <b>${resultAana}</b><br>Ratti: <b>${resultRatti}</b>`;
+    }
+  </script>
+</body>
+</html>
