@@ -154,6 +154,7 @@
       if (val === "." && input.includes(".")) return;
       input += val;
       document.getElementById("gramInput").value = input;
+      calculate();
     }
 
     function backspace() {
