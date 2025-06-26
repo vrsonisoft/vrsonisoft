@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gold Rate Calculator</title>
+  <style>
+    :root {
+      --primary-color: #ffc107;
+      --secondary-color: #28a745;
+      --bg-color: #f9f9f9;
+      --card-bg: #ffffff;
+      --result-bg: #f4f4f4;
+      --text-color: #333333;
+      --border-color: #dddddd;
+      --shadow-color: rgba(0, 0, 0, 0.1);
+      --hover-primary: #e0a800;
+      --hover-secondary: #218838;
+    }
+
+    .dark-mode {
+      --primary-color: #ffbf00;
+      --secondary-color: #31b657;
+      --bg-color: #121212;
+      --card-bg: #1e1e1e;
+      --result-bg: #242424;
+      --text-color: #e0e0e0;
+      --border-color: #333333;
+      --shadow-color: rgba(0, 0, 0, 0.6);
+      --hover-primary: #cc9900;
+      --hover-secondary: #299349;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      margin: 0;
+      padding: 20px;
+    }
+
+    .theme-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+    }
+
+    .container {
+      max-width: 500px;
+      margin: 80px auto;
+      padding: 24px;
+      background: var(--card-bg);
+      border-radius: 15px;
+      box-shadow: 0 8px 20px var(--shadow-color);
+    }
+
+    h2 {
+      text-align: center;
+      color: var(--primary-color);
+      margin-bottom: 24px;
+    }
+
+    .input-group {
+      margin-bottom: 18px;
+    }
+
+    .input-group label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: bold;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      background: var(--bg-color);
+      color: var(--text-color);
+    }
+
+    .result-label {
+      text-align: center;
+      margin-top: 25px;
+      background: var(--result-bg);
+      border: 1px solid var(--border-color);
+      padding: 10px;
+      font-weight: bold;
+      font-size: 16px;
+      border-radius: 8px;
+    }
+
+    .result-value {
+      text-align: center;
+      background: var(--result-bg);
+      border: 1px solid var(--border-color);
+      padding: 10px;
+      font-weight: bold;
+      font-size: 18px;
+      border-radius: 8px;
+      margin-top: 10px;
+    }
+
+    .btn-row {
+      display: flex;
+      gap: 15px;
+      margin-top: 30px;
+    }
+
+    button {
+      flex: 1;
+      padding: 12px;
+      font-size: 16px;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .calculate {
+      background-color: var(--secondary-color);
+      color: #fff;
+    }
+
+    .calculate:hover {
+      background-color: var(--hover-secondary);
+    }
+
+    .clear {
+      background-color: var(--primary-color);
+      color: #fff;
+    }
+
+    .clear:hover {
+      background-color: var(--hover-primary);
+    }
+  </style>
+</head>
+<body>
+  <div class="theme-toggle">
+    <label>
+      <input type="checkbox" id="toggleTheme">
+      <span style="color: var(--text-color)">Dark Mode</span>
+    </label>
+  </div>
+
+  <div class="container">
+    <h2>Gold Rate Calculator</h2>
+
+    <div class="input-group">
+      <label for="goldWeight">Gold Weight (gm)</label>
+      <input type="number" id="goldWeight" placeholder="Enter weight" step="0.001">
+    </div>
+
+    <div class="input-group">
+      <label for="goldRate">Gold Rate (Per Gram)</label>
+      <input type="number" id="goldRate" placeholder="Enter rate" step="0.01">
+    </div>
+
+    <div class="input-group">
+      <label for="goldTouch">Required Touch (%)</label>
+      <input type="number" id="goldTouch" placeholder="Enter touch" step="0.01">
+    </div>
+
+    <div class="result-label">Total Amount</div>
+    <div class="result-value" id="amount">₹0.00</div>
+
+    <div class="btn-row">
+      <button class="calculate" onclick="calculate()">CALCULATE</button>
+      <button class="clear" onclick="clearFields()">CLEAR</button>
+    </div>
+  </div>
+
+  <script>
+    function calculate() {
+      const weight = parseFloat(document.getElementById('goldWeight').value);
+      const touch = parseFloat(document.getElementById('goldTouch').value);
+      const rate = parseFloat(document.getElementById('goldRate').value);
+
+      if (!weight || !touch || !rate) return;
+
+      const amount = (weight * (touch / 100) * rate).toFixed(2);
+      document.getElementById('amount').innerText = `₹${amount}`;
+    }
+
+    function clearFields() {
+      document.getElementById('goldWeight').value = '';
+      document.getElementById('goldTouch').value = '';
+      document.getElementById('goldRate').value = '';
+      document.getElementById('amount').innerText = '₹0.00';
+    }
+
+    const toggle = document.getElementById('toggleTheme');
+    toggle.addEventListener('change', () => {
+      document.body.classList.toggle('dark-mode');
+      localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+    });
+
+    if (localStorage.getItem('theme') === 'dark') {
+      document.body.classList.add('dark-mode');
+      toggle.checked = true;
+    }
+  </script>
+</body>
+</html>
