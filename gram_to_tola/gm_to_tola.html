@@ -1,3 +1,5 @@
+# Creating updated HTML content based on the mobile app UI design
+html_ui_content = """
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,63 +7,131 @@
   <title>Gram to Tola Converter</title>
   <style>
     body {
-      background-color: #121212;
-      color: #fff;
-      font-family: Arial, sans-serif;
-      text-align: center;
       margin: 0;
-      padding: 20px;
+      background-color: #0f1125;
+      font-family: 'Segoe UI', sans-serif;
+      color: white;
+      text-align: center;
     }
+
     h1 {
-      color: #ffc107;
-    }
-    .output {
       font-size: 24px;
+      margin: 20px 0;
+    }
+
+    .top-bar {
+      background-color: #092339;
+      color: white;
+      padding: 15px;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    .cards {
+      display: flex;
+      justify-content: center;
       margin-top: 20px;
+      gap: 10px;
     }
-    .result {
-      margin-top: 15px;
-      font-size: 18px;
-      color: #00e676;
+
+    .card {
+      background-color: #f8f2f2;
+      padding: 20px;
+      border-radius: 20px;
+      min-width: 80px;
     }
+
+    .card-title {
+      font-size: 14px;
+      color: #ffcc00;
+      margin-bottom: 10px;
+    }
+
+    .card-value {
+      font-size: 20px;
+      font-weight: bold;
+      color: #ff9900;
+    }
+
+    .main-value {
+      font-size: 36px;
+      font-weight: bold;
+      margin: 20px;
+    }
+
+    .equation {
+      font-size: 16px;
+      color: #ffd700;
+      margin-bottom: 10px;
+    }
+
     .buttons {
       display: grid;
-      grid-template-columns: repeat(3, 80px);
+      grid-template-columns: repeat(3, 1fr);
       gap: 10px;
-      justify-content: center;
-      margin: 25px auto;
-    }
-    button {
       padding: 15px;
+      background-color: #121426;
+      max-width: 300px;
+      margin: auto;
+    }
+
+    .buttons button {
+      padding: 20px;
       font-size: 20px;
-      background-color: #333;
-      color: #fff;
+      border-radius: 10px;
       border: none;
-      border-radius: 8px;
+      background-color: #1f2036;
+      color: white;
       cursor: pointer;
     }
-    button:hover {
-      background-color: #444;
+
+    .buttons button:hover {
+      background-color: #2b2d4d;
     }
+
+    .buttons .equal {
+      background-color: #ffcc00;
+      color: black;
+      font-weight: bold;
+    }
+
     input {
-      font-size: 26px;
+      font-size: 30px;
       text-align: center;
-      padding: 12px;
-      border-radius: 5px;
-      width: 180px;
+      background: none;
+      color: white;
+      border: none;
+      outline: none;
     }
+
   </style>
 </head>
 <body>
-  <h1>Gram to Tola Converter</h1>
 
-  <div class="output">
-    <input type="text" id="gramInput" readonly placeholder="0.00 g" />
+  <div class="top-bar">Gram to tola converter</div>
+
+  <div class="cards">
+    <div class="card">
+      <div class="card-title">Tola</div>
+      <div class="card-value" id="tolaValue">0</div>
+    </div>
+    <div class="card">
+      <div class="card-title">Aana</div>
+      <div class="card-value" id="aanaValue">0</div>
+    </div>
+    <div class="card">
+      <div class="card-title">Ratti</div>
+      <div class="card-value" id="rattiValue">0</div>
+    </div>
   </div>
 
-  <div id="resultBox" class="result"></div>
+  <div class="main-value"><input type="text" id="gramInput" readonly value="" placeholder="0"></div>
+  <div class="equation" id="equationText"></div>
 
   <div class="buttons">
+    <button onclick="clearInput()">AC</button>
+    <button onclick="backspace()">⌫</button>
+    <button onclick="share()">Share</button>
     <button onclick="addValue('7')">7</button>
     <button onclick="addValue('8')">8</button>
     <button onclick="addValue('9')">9</button>
@@ -73,8 +143,7 @@
     <button onclick="addValue('3')">3</button>
     <button onclick="addValue('.')">.</button>
     <button onclick="addValue('0')">0</button>
-    <button onclick="backspace()">⌫</button>
-    <button onclick="clearInput()">AC</button>
+    <button class="equal" onclick="calculate()">=</button>
   </div>
 
   <script>
@@ -84,59 +153,62 @@
       if (val === "." && input.includes(".")) return;
       input += val;
       document.getElementById("gramInput").value = input;
-      calculate();
     }
 
     function backspace() {
       input = input.slice(0, -1);
       document.getElementById("gramInput").value = input;
-      calculate();
     }
 
     function clearInput() {
       input = "";
       document.getElementById("gramInput").value = "";
-      document.getElementById("resultBox").innerHTML = "";
+      document.getElementById("tolaValue").innerText = "0";
+      document.getElementById("aanaValue").innerText = "0";
+      document.getElementById("rattiValue").innerText = "0";
+      document.getElementById("equationText").innerText = "";
+    }
+
+    function share() {
+      alert("Share functionality not implemented.");
     }
 
     function calculate() {
       const gram = parseFloat(input);
-      if (isNaN(gram) || gram <= 0) {
-        document.getElementById("resultBox").innerHTML = "";
-        return;
-      }
+      if (isNaN(gram)) return;
 
       const tolaGram = 11.664;
       const aana = 0.729;
       const rati = 0.182;
 
-      let resultTola = 0;
-      let resultAana = 0;
-      let resultRatti = 0;
+      let tola = 0, aanaVal = 0, ratti = 0;
 
       if (gram >= tolaGram) {
-        resultTola = Math.floor(gram / tolaGram);
-        const remTola = gram - resultTola * tolaGram;
+        tola = Math.floor(gram / tolaGram);
+        let remTola = gram - tola * tolaGram;
 
         if (remTola >= aana) {
-          resultAana = Math.floor(remTola / aana);
-          const remAana = remTola - resultAana * aana;
-          resultRatti = (remAana / rati).toFixed(2);
+          aanaVal = Math.floor(remTola / aana);
+          let remAana = remTola - aanaVal * aana;
+          ratti = remAana / rati;
         } else {
-          resultAana = 0;
-          resultRatti = (remTola / rati).toFixed(2);
+          aanaVal = 0;
+          ratti = remTola / rati;
         }
       } else if (gram >= aana) {
-        resultAana = Math.floor(gram / aana);
-        const remAana = gram - resultAana * aana;
-        resultRatti = (remAana / rati).toFixed(2);
+        aanaVal = Math.floor(gram / aana);
+        let remAana = gram - aanaVal * aana;
+        ratti = remAana / rati;
       } else {
-        resultRatti = (gram / rati).toFixed(2);
+        ratti = gram / rati;
       }
 
-      document.getElementById("resultBox").innerHTML =
-        `Tola: <b>${resultTola}</b><br>Aana: <b>${resultAana}</b><br>Ratti: <b>${resultRatti}</b>`;
+      document.getElementById("tolaValue").innerText = tola;
+      document.getElementById("aanaValue").innerText = aanaVal;
+      document.getElementById("rattiValue").innerText = ratti.toFixed(3);
+      document.getElementById("equationText").innerText = `${gram} / 11.664 = ${(gram / tolaGram).toFixed(3)}`;
     }
   </script>
+
 </body>
 </html>
