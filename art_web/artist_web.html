@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Arti Sharma – Sketch Artist</title>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Open+Sans&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #1e1e1e;
+      --text-light: #ffffff;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { cursor: url('https://cdn-icons-png.flaticon.com/512/685/685655.png') 4 4, auto; }
+    body { font-family: 'Open Sans', sans-serif; background: var(--bg-dark); color: var(--text-light); }
+    header { position: relative; height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; background: black; overflow: hidden; }
+    header::before { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: url('https://media.baamboozle.com/uploads/images/471559/1631339199_273296_gif-url.gif') center/cover no-repeat; opacity: 0.25; animation: fadeIn 5s ease-in-out infinite alternate; }
+    @keyframes fadeIn { 0%{opacity:0.2;}100%{opacity:0.35;} }
+    header h1 { font-family: 'Caveat', cursive; font-size: 4rem; z-index:1; color:white; }
+    header p { font-size:1.2rem; max-width:700px; margin:auto; z-index:1; }
+    section { padding:80px 20px; max-width:1200px; margin:auto; }
+    section h2 { font-family:'Caveat', cursive; font-size:2.5rem; text-align:center; margin-bottom:30px;}
+    .section-box { border:2px dashed #555; padding:30px; border-radius:10px; }
+    .about-text { font-size:1rem; line-height:1.6; color:#ccc; text-align:center; }
+    .offer-carousel, .plans-carousel { display:flex; overflow:hidden; position:relative; }
+    .offer-carousel .slide, .plans-carousel .slide { display:none; flex:0 0 100%; justify-content:space-around; gap:20px; flex-wrap:wrap; }
+    .offer-carousel .slide.active, .plans-carousel .slide.active { display:flex; }
+    .offer-carousel img, .plan-card img { width:30%; border-radius:12px; box-shadow:0 8px 20px rgba(0,0,0,0.5); }
+    .plan-card { width:30%; background:#2b2b2b; padding:15px; border-radius:10px; border:2px dashed #555; box-shadow:0 6px 12px rgba(0,0,0,0.2); text-align:center; }
+    .plan-card h4 { margin:10px 0; color:#fff; }
+    .plan-card p { font-size:0.95rem; color:#ccc; }
+    .plan-card .price { font-size:1.2rem; color:lightgreen; font-weight:bold; margin:10px 0; }
+    .gallery { display:flex; flex-wrap:wrap; gap:20px; justify-content:center;}
+    .gallery img { width:220px; height:280px; object-fit:cover; border-radius:10px; box-shadow:0 6px 12px rgba(0,0,0,0.3); }
+    .testimonial-carousel { display:flex; gap:30px; justify-content:center; overflow:hidden; }
+    .testimonial { flex:0 0 300px; opacity:0.5; transform:scale(0.85); transition:transform 0.5s,opacity 0.5s; background:#2b2b2b; padding:20px; border-radius:10px; }
+    .testimonial.active { transform:scale(1.1); opacity:1; background:#3b3b3b; }
+    .testimonial-nav, .plans-nav { text-align:center; margin-top:20px;}
+    .testimonial-nav button, .plans-nav button { background:none;color:white;border:2px dashed #555;padding:10px 20px;margin:0 10px;border-radius:6px;cursor:pointer;}
+    form { display:flex; flex-direction:column; gap:15px; max-width:500px; margin:auto; }
+    input, textarea { padding:12px; border-radius:6px; border:1px solid #999; font-size:1rem; }
+    button[type="submit"] { padding:12px; background:#fff; border:none; font-weight:bold; border-radius:6px; cursor:pointer;}
+    .whatsapp-float { position:fixed; bottom:20px; right:20px; z-index:999; }
+    .whatsapp-float img { width:60px; height:60px; border-radius:50%; }
+    footer { background:#111; color:#ccc; text-align:center; padding:30px; }
+    video { width:100%; max-width:800px; display:block; margin:20px auto 50px; border-radius:12px; }
+  </style>
+  <script>
+    document.addEventListener("DOMContentLoaded",()=>{
+      let tSlides=document.querySelectorAll(".offer-carousel .slide"), tI=0;
+      function showOffers(){ tSlides.forEach(s=>s.classList.remove("active")); tSlides[tI].classList.add("active"); }
+      document.getElementById("nextOffer")?.addEventListener("click",()=>{
+        tI=(tI+1)%tSlides.length; showOffers();
+      });
+      showOffers();
+      setInterval(()=>{ tI=(tI+1)%tSlides.length; showOffers(); },5000);
+
+      let pSlides=document.querySelectorAll(".plans-carousel .slide"), pI=0;
+      function showPlans(){ pSlides.forEach(s=>s.classList.remove("active")); pSlides[pI].classList.add("active"); }
+      document.getElementById("prevPlan").addEventListener("click",()=>{ pI=(pI-1+pSlides.length)%pSlides.length; showPlans(); });
+      document.getElementById("nextPlan").addEventListener("click",()=>{ pI=(pI+1)%pSlides.length; showPlans(); });
+      showPlans();
+      setInterval(()=>{ pI=(pI+1)%pSlides.length; showPlans(); },6000);
+
+      let testi=document.querySelectorAll(".testimonial-carousel .testimonial"), ti=0;
+      function showTest(){ testi.forEach(t=>t.classList.remove("active")); testi[ti].classList.add("active"); }
+      document.getElementById("prevTest").addEventListener("click",()=>{ ti=(ti-1+testi.length)%testi.length; showTest(); });
+      document.getElementById("nextTest").addEventListener("click",()=>{ ti=(ti+1)%testi.length; showTest(); });
+      showTest();
+      setInterval(()=>{ ti=(ti+1)%testi.length; showTest(); },4000);
+    });
+  </script>
+</head>
+<body>
+  <header>
+    <div><h1>Arti Sharma</h1><p>Sketch Artist | Pencil Realism | Portraits | Custom Art Commissions</p></div>
+  </header>
+
+  <section><h2>About Me</h2>
+    <div class="section-box about-text">
+      I'm Arti Sharma, a passionate sketch artist…bringing emotions to life through pencil strokes. I specialize in realistic portraits, conceptual sketches, and live event drawings.
+    </div>
+  </section>
+
+  <section><h2>Welcome Video</h2>
+    <div class="section-box">
+      <video controls autoplay muted loop><source src="https://www.w3schools.com/html/mov_bbb.mp4" /></video>
+    </div>
+  </section>
+
+  <section><h2>Satisfied And Happy Customers</h2>
+    <div class="section-box">
+      <div class="offer-carousel">
+        <div class="slide active">
+          <img src="https://sketchartist.in/assets/images/sketch-artist-in-delhi-170230986036.jpg" alt="1"/>
+          <img src="https://sketchartist.in/assets/images/drawing-artist-near-me-170230939650.jpg" alt="2"/>
+          <img src="https://sketchartist.in/assets/images/sketch-artist-in-delhi-haat-170230932451.jpg" alt="3"/>
+        </div>
+        <div class="slide">
+            <img src="https://sketchartist.in/assets/images/sketch-drawing-near-me-170230935338.jpg"/>
+            <img src="https://sketchartist.in/assets/images/sketch-drawing-near-me-170230935338.jpg"/>
+            <img src="https://sketchartist.in/assets/images/sketch-drawing-near-me-170230935338.jpg"/>
+        </div>
+        <div class="slide">
+            <img src="https://sketchartist.in/assets/images/sketch-drawing-near-me-170230935338.jpg"/>
+            <img src="https://sketchartist.in/assets/images/sketch-drawing-near-me-170230935338.jpg"/>
+            <img src="https://sketchartist.in/assets/images/sketch-drawing-near-me-170230935338.jpg"/></div>
+      </div>
+      <div class="testimonial-nav">
+        <button id="nextOffer">Next Offer →</button>
+      </div>
+    </div>
+  </section>
+
+  <section><h2>Plans</h2>
+    <div class="section-box">
+      <div class="plans-carousel">
+        <div class="slide active">
+          <div class="plan-card"><img src="https://craftico.in/cdn/shop/files/Pencil_Sketch_Portrait_of_young_man-1543579.jpg?v=1739447729" alt="p1"/><h4>Pencil Portrait</h4><div class="price">₹5000</div><p>Handmade pencil sketch perfect as gift.</p></div>
+          <div class="plan-card"><img src="https://i.pinimg.com/736x/25/5d/65/255d650481bfff07ebd92b1594797d75.jpg" alt="p2"/><h4>Birthday Sketch</h4><div class="price">₹4500</div><p>Unique birthday gift with personal touch.</p></div>
+          <div class="plan-card"><img src="https://i.pinimg.com/736x/60/a0/a4/60a0a46c5cdf17265a57abb8ca6696d7.jpg" alt="p3"/><h4>Couple Art</h4><div class="price">₹8000</div><p>Celebrate love with beautiful couple portrait.</p></div>
+        </div>
+        <div class="slide"><div class="plan-card"><img src="https://images.saatchiart.com/saatchi/2124503/art/9969743/9032661-CDKLKWXS-7.jpg" alt="p4"/><h4>Army Tribute</h4><div class="price">₹7000</div><p>Salute bravery with powerful art.</p></div>
+        <div class="plan-card"><img src="https://i.pinimg.com/736x/c7/1e/fd/c71efdfb81b766b8eb296c8d155b73c3.jpg" /><h4>Child Sketch</h4><div class="price">₹4000</div><p>Capture childhood smiles forever.</p></div>
+        <div class="plan-card"><img src="https://i.pinimg.com/736x/2b/ce/44/2bce445e137395cccd6844badafbb893.jpg" /><h4>Lady Elegance</h4><div class="price">₹5200</div><p>Graceful feminine art at its best.</p></div></div>
+        <div class="slide"><div class="plan-card"><img src="https://i.pinimg.com/736x/90/58/9f/90589f458f213f2212c21ce61e03b911.jpg"/><h4>Formal Portrait</h4><div class="price">₹6000</div><p>Perfect for professional gifting.</p></div>
+        <div class="plan-card"><img src="https://t3.ftcdn.net/jpg/11/68/32/42/360_F_1168324240_aXnyLndJKn7o8w9Ce0v2dmoBhQoXZJ9i.jpg"/><h4>Family Sketch</h4><div class="price">₹12000</div><p>Get the whole family in one beautiful art.</p></div>
+        <div class="plan-card"><img src="https://www.picclickimg.com/pWcAAOSwjqNgTnfa/ENGLISH-SCHOOL-18th-Century-Miniature-Portrait-Drawing-of.webp"/><h4>Gift Pack</h4><div class="price">₹3500</div><p>Mini portrait + frame combo deal.</p></div></div>
+      </div>
+      <div class="plans-nav">
+        <button id="prevPlan">← Prev</button>
+        <button id="nextPlan">Next →</button>
+      </div>
+    </div>
+  </section>
+
+  <section><h2>Our Work</h2><div class="section-box"><div class="gallery">
+    <img src="https://i.pinimg.com/736x/f1/ae/86/f1ae868f947e56cc0be1bb20ae6ada64.jpg">
+    <img src="https://i.pinimg.com/736x/d1/40/f7/d140f7e52d33c5fd3895cf691fb815f5.jpg">
+    <img src="https://cdn.exoticindia.com/images/products/original/paintings-2019/ldb919.jpg">
+    <img src="https://i.pinimg.com/736x/2b/ce/44/2bce445e137395cccd6844badafbb893.jpg">
+    <img src="https://i.pinimg.com/736x/48/63/2f/48632fe3e16fe57a518a15be203da0e2.jpg">
+    <img src="https://i.pinimg.com/736x/8d/c3/e8/8dc3e86812d72076c9331e96791e48b9.jpg">
+    <img src="https://fullbloomclub.net/wp-content/uploads/2024/03/pencil_drawing2.jpg">
+    <img src="https://i.pinimg.com/736x/33/6c/36/336c365244720a6e0f22ce28e27795f5.jpg">
+    <img src="https://www.kokuyocamlin.com/camel/image/catalog/artists/RXZpS0JaVXJhU0hMaDZxdmt5c01tZz0921811/1745493748file1_org.jpg">
+    <img src="https://i.pinimg.com/736x/66/44/75/66447520f1de35cad9df665894042db5.jpg">
+    <img src="https://i.pinimg.com/736x/92/e9/98/92e99806473cc833870f49c46dda6e92.jpg">
+    <img src="https://i.pinimg.com/236x/0c/5e/cd/0c5ecd1482e61f5625a00848ec66a214.jpg">
+  </div></div></section>
+
+  <section><h2>Testimonials</h2><div class="section-box"><div class="testimonial-carousel">
+    <div class="testimonial">“Incredible detail in every sketch!”<br>– Riya Malhotra</div>
+    <div class="testimonial">“Absolutely loved the portrait!”<br>– Neha Tiwari</div>
+    <div class="testimonial">“Made my event so memorable.”<br>– Jay Sharma</div>
+    <div class="testimonial">“Truly professional and talented.”<br>– Sanya Patel</div>
+  </div><div class="testimonial-nav"><button id="prevTest">← Prev</button><button id="nextTest">Next →</button></div></div></section>
+
+  <section><h2>Contact Me</h2><div class="section-box">
+    <form action="https://formspree.io/f/mnqwrwdd" method="POST">
+      <input type="text" name="name" placeholder="Your Name" required>
+      <input type="email" name="email" placeholder="Your Email" required>
+      <textarea name="message" rows="5" placeholder="Your Message" required></textarea>
+      <button type="submit">Send Message</button>
+    </form>
+
+    
+
+  </div></section>
+
+  <div class="whatsapp-float"
+  ><a href="https://wa.me/919876543210" target="_blank">
+    <img src="https://img.icons8.com/color/96/000000/whatsapp--v1.png" alt="WhatsApp"></a></div>
+  <footer>&copy; 2025 Arti Sharma. All Rights Reserved.</footer>
+</body>
+</html>
